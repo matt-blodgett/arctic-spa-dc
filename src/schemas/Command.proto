@@ -31,11 +31,11 @@ message Command {
   optional bool set_exhaust_fan = 14;
   optional SetSaunaState set_sauna_state = 15;
   optional int32 set_sauna_time_left = 16;
-  optional bool all_on = 17;
+  optional bool set_all_on = 17;
   optional bool set_fogger = 18;
-  optional bool spaboy_boost = 19;
-  optional bool pack_reset = 20;
-  optional bool log_dump = 21;
+  optional bool set_spaboy_boost = 19;
+  optional bool set_pack_reset = 20;
+  optional bool set_log_dump = 21;
   optional bool set_sds = 22;
   optional bool set_yess = 23;
 }

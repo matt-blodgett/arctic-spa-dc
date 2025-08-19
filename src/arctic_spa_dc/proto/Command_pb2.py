@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rCommand.proto\"\xe4\x06\n\x07\x43ommand\x12+\n#set_temperature_setpoint_fahrenheit\x18\x01 \x01(\x05\x12*\n\nset_pump_1\x18\x02 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12*\n\nset_pump_2\x18\x03 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12*\n\nset_pump_3\x18\x04 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12*\n\nset_pump_4\x18\x05 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12*\n\nset_pump_5\x18\x06 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12,\n\x0cset_blower_1\x18\x07 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12,\n\x0cset_blower_2\x18\x08 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12\x12\n\nset_lights\x18\t \x01(\x08\x12\x12\n\nset_stereo\x18\n \x01(\x08\x12\x12\n\nset_filter\x18\x0b \x01(\x08\x12\x11\n\tset_onzen\x18\x0c \x01(\x08\x12\x11\n\tset_ozone\x18\r \x01(\x08\x12\x17\n\x0fset_exhaust_fan\x18\x0e \x01(\x08\x12/\n\x0fset_sauna_state\x18\x0f \x01(\x0e\x32\x16.Command.SetSaunaState\x12\x1b\n\x13set_sauna_time_left\x18\x10 \x01(\x05\x12\x0e\n\x06\x61ll_on\x18\x11 \x01(\x08\x12\x12\n\nset_fogger\x18\x12 \x01(\x08\x12\x14\n\x0cspaboy_boost\x18\x13 \x01(\x08\x12\x12\n\npack_reset\x18\x14 \x01(\x08\x12\x10\n\x08log_dump\x18\x15 \x01(\x08\x12\x0f\n\x07set_sds\x18\x16 \x01(\x08\x12\x10\n\x08set_yess\x18\x17 \x01(\x08\":\n\rSetPumpStatus\x12\x0c\n\x08PUMP_OFF\x10\x00\x12\x0c\n\x08PUMP_LOW\x10\x01\x12\r\n\tPUMP_HIGH\x10\x02\"l\n\rSetSaunaState\x12\x0e\n\nSAUNA_IDLE\x10\x00\x12\x0f\n\x0bSAUNA_TIMER\x10\x01\x12\x12\n\x0eSAUNA_PRESET_A\x10\x02\x12\x12\n\x0eSAUNA_PRESET_B\x10\x03\x12\x12\n\x0eSAUNA_PRESET_C\x10\x04'
+  serialized_pb=b'\n\rCommand.proto\"\xf4\x06\n\x07\x43ommand\x12+\n#set_temperature_setpoint_fahrenheit\x18\x01 \x01(\x05\x12*\n\nset_pump_1\x18\x02 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12*\n\nset_pump_2\x18\x03 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12*\n\nset_pump_3\x18\x04 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12*\n\nset_pump_4\x18\x05 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12*\n\nset_pump_5\x18\x06 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12,\n\x0cset_blower_1\x18\x07 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12,\n\x0cset_blower_2\x18\x08 \x01(\x0e\x32\x16.Command.SetPumpStatus\x12\x12\n\nset_lights\x18\t \x01(\x08\x12\x12\n\nset_stereo\x18\n \x01(\x08\x12\x12\n\nset_filter\x18\x0b \x01(\x08\x12\x11\n\tset_onzen\x18\x0c \x01(\x08\x12\x11\n\tset_ozone\x18\r \x01(\x08\x12\x17\n\x0fset_exhaust_fan\x18\x0e \x01(\x08\x12/\n\x0fset_sauna_state\x18\x0f \x01(\x0e\x32\x16.Command.SetSaunaState\x12\x1b\n\x13set_sauna_time_left\x18\x10 \x01(\x05\x12\x12\n\nset_all_on\x18\x11 \x01(\x08\x12\x12\n\nset_fogger\x18\x12 \x01(\x08\x12\x18\n\x10set_spaboy_boost\x18\x13 \x01(\x08\x12\x16\n\x0eset_pack_reset\x18\x14 \x01(\x08\x12\x14\n\x0cset_log_dump\x18\x15 \x01(\x08\x12\x0f\n\x07set_sds\x18\x16 \x01(\x08\x12\x10\n\x08set_yess\x18\x17 \x01(\x08\":\n\rSetPumpStatus\x12\x0c\n\x08PUMP_OFF\x10\x00\x12\x0c\n\x08PUMP_LOW\x10\x01\x12\r\n\tPUMP_HIGH\x10\x02\"l\n\rSetSaunaState\x12\x0e\n\nSAUNA_IDLE\x10\x00\x12\x0f\n\x0bSAUNA_TIMER\x10\x01\x12\x12\n\x0eSAUNA_PRESET_A\x10\x02\x12\x12\n\x0eSAUNA_PRESET_B\x10\x03\x12\x12\n\x0eSAUNA_PRESET_C\x10\x04'
 )
 
 
@@ -49,8 +49,8 @@ _COMMAND_SETPUMPSTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=718,
-  serialized_end=776,
+  serialized_start=734,
+  serialized_end=792,
 )
 _sym_db.RegisterEnumDescriptor(_COMMAND_SETPUMPSTATUS)
 
@@ -89,8 +89,8 @@ _COMMAND_SETSAUNASTATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=778,
-  serialized_end=886,
+  serialized_start=794,
+  serialized_end=902,
 )
 _sym_db.RegisterEnumDescriptor(_COMMAND_SETSAUNASTATE)
 
@@ -216,7 +216,7 @@ _COMMAND = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='all_on', full_name='Command.all_on', index=16,
+      name='set_all_on', full_name='Command.set_all_on', index=16,
       number=17, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -230,21 +230,21 @@ _COMMAND = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='spaboy_boost', full_name='Command.spaboy_boost', index=18,
+      name='set_spaboy_boost', full_name='Command.set_spaboy_boost', index=18,
       number=19, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='pack_reset', full_name='Command.pack_reset', index=19,
+      name='set_pack_reset', full_name='Command.set_pack_reset', index=19,
       number=20, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='log_dump', full_name='Command.log_dump', index=20,
+      name='set_log_dump', full_name='Command.set_log_dump', index=20,
       number=21, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -279,7 +279,7 @@ _COMMAND = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=18,
-  serialized_end=886,
+  serialized_end=902,
 )
 
 _COMMAND.fields_by_name['set_pump_1'].enum_type = _COMMAND_SETPUMPSTATUS

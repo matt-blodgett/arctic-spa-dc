@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11Information.proto\"\x84\x08\n\x0bInformation\x12\x1a\n\x12pack_serial_number\x18\x01 \x01(\t\x12\x1d\n\x15pack_firmware_version\x18\x02 \x01(\t\x12\x1d\n\x15pack_hardware_version\x18\x03 \x01(\t\x12\x17\n\x0fpack_product_id\x18\x04 \x01(\t\x12\x15\n\rpack_board_id\x18\x05 \x01(\t\x12\x1a\n\x12topside_product_id\x18\x06 \x01(\t\x12 \n\x18topside_software_version\x18\x07 \x01(\t\x12\x0c\n\x04guid\x18\x08 \x01(\t\x12&\n\x08spa_type\x18\t \x01(\x0e\x32\x14.Information.SpaType\x12\x1c\n\x14website_registration\x18\n \x01(\x08\x12$\n\x1cwebsite_registration_confirm\x18\x0b \x01(\x08\x12\x13\n\x0bmac_address\x18\x0c \x01(\x0c\x12\x18\n\x10\x66irmware_version\x18\r \x01(\x05\x12\x14\n\x0cproduct_code\x18\x0e \x01(\x05\x12\x1c\n\x14var_software_version\x18\x0f \x01(\t\x12\x1f\n\x17spaboy_firmware_version\x18\x10 \x01(\t\x12\x1f\n\x17spaboy_hardware_version\x18\x11 \x01(\t\x12\x19\n\x11spaboy_product_id\x18\x12 \x01(\t\x12\x1c\n\x14spaboy_serial_number\x18\x13 \x01(\t\x12\x1d\n\x15rfid_firmware_version\x18\x14 \x01(\t\x12\x1d\n\x15rfid_hardware_version\x18\x15 \x01(\t\x12\x17\n\x0frfid_product_id\x18\x16 \x01(\t\x12\x1a\n\x12rfid_serial_number\x18\x17 \x01(\t\"/\n\x07SpaType\x12\x0b\n\x07HOT_TUB\x10\x00\x12\x0c\n\x08\x43OLD_TUB\x10\x01\x12\t\n\x05SAUNA\x10\x02\"\xb0\x02\n\x0bProductCode\x12\x17\n\x11\x43OLD_TUB_COLDFIRE\x10\x80\x80\x0c\x12\x12\n\x0c\x43OLD_TUB_LPC\x10\x81\x80\x0c\x12\x16\n\x10PERIPHERAL_ONZEN\x10\x81\x80\x10\x12\x1d\n\x17PERIPHERAL_TOP_SIDE_A10\x10\x82\x80\x10\x12\x14\n\x0ePERIPHERAL_WAU\x10\x80\x80\x10\x12\x14\n\x0eSAUNA_COLDFIRE\x10\x80\x80\x08\x12\x0f\n\tSAUNA_LPC\x10\x81\x80\x08\x12\x17\n\x11SPA_EURO_COLDFIRE\x10\x81\x80\x04\x12\x12\n\x0cSPA_EURO_LPC\x10\x83\x80\x04\x12\x15\n\x0fSPA_EURO_YOCTUB\x10\x85\x80\x04\x12\x15\n\x0fSPA_NA_COLDFIRE\x10\x80\x80\x04\x12\x10\n\nSPA_NA_LPC\x10\x82\x80\x04\x12\x13\n\rSPA_NA_YOCTUB\x10\x84\x80\x04'
+  serialized_pb=b'\n\x11Information.proto\"\xc8\t\n\x0bInformation\x12\x1a\n\x12pack_serial_number\x18\x01 \x01(\t\x12\x1d\n\x15pack_firmware_version\x18\x02 \x01(\t\x12\x1d\n\x15pack_hardware_version\x18\x03 \x01(\t\x12\x17\n\x0fpack_product_id\x18\x04 \x01(\t\x12\x15\n\rpack_board_id\x18\x05 \x01(\t\x12\x1a\n\x12topside_product_id\x18\x06 \x01(\t\x12 \n\x18topside_software_version\x18\x07 \x01(\t\x12\x0c\n\x04guid\x18\x08 \x01(\t\x12&\n\x08spa_type\x18\t \x01(\x0e\x32\x14.Information.SpaType\x12\x1c\n\x14website_registration\x18\n \x01(\x08\x12$\n\x1cwebsite_registration_confirm\x18\x0b \x01(\x08\x12\x13\n\x0bmac_address\x18\x0c \x01(\x0c\x12\x18\n\x10\x66irmware_version\x18\r \x01(\x05\x12\x14\n\x0cproduct_code\x18\x0e \x01(\x05\x12\x1c\n\x14var_software_version\x18\x0f \x01(\t\x12\x1f\n\x17spaboy_firmware_version\x18\x10 \x01(\t\x12\x1f\n\x17spaboy_hardware_version\x18\x11 \x01(\t\x12\x19\n\x11spaboy_product_id\x18\x12 \x01(\t\x12\x1c\n\x14spaboy_serial_number\x18\x13 \x01(\t\x12\x1d\n\x15rfid_firmware_version\x18\x14 \x01(\t\x12\x1d\n\x15rfid_hardware_version\x18\x15 \x01(\t\x12\x17\n\x0frfid_product_id\x18\x16 \x01(\t\x12\x1a\n\x12rfid_serial_number\x18\x17 \x01(\t\"J\n\x07SpaType\x12\x14\n\x10SPA_TYPE_HOT_TUB\x10\x00\x12\x15\n\x11SPA_TYPE_COLD_TUB\x10\x01\x12\x12\n\x0eSPA_TYPE_SAUNA\x10\x02\"\xd9\x03\n\x0bProductCode\x12$\n\x1ePRODUCT_CODE_COLD_TUB_COLDFIRE\x10\x80\x80\x0c\x12\x1f\n\x19PRODUCT_CODE_COLD_TUB_LPC\x10\x81\x80\x0c\x12#\n\x1dPRODUCT_CODE_PERIPHERAL_ONZEN\x10\x81\x80\x10\x12*\n$PRODUCT_CODE_PERIPHERAL_TOP_SIDE_A10\x10\x82\x80\x10\x12!\n\x1bPRODUCT_CODE_PERIPHERAL_WAU\x10\x80\x80\x10\x12!\n\x1bPRODUCT_CODE_SAUNA_COLDFIRE\x10\x80\x80\x08\x12\x1c\n\x16PRODUCT_CODE_SAUNA_LPC\x10\x81\x80\x08\x12$\n\x1ePRODUCT_CODE_SPA_EURO_COLDFIRE\x10\x81\x80\x04\x12\x1f\n\x19PRODUCT_CODE_SPA_EURO_LPC\x10\x83\x80\x04\x12\"\n\x1cPRODUCT_CODE_SPA_EURO_YOCTUB\x10\x85\x80\x04\x12\"\n\x1cPRODUCT_CODE_SPA_NA_COLDFIRE\x10\x80\x80\x04\x12\x1d\n\x17PRODUCT_CODE_SPA_NA_LPC\x10\x82\x80\x04\x12 \n\x1aPRODUCT_CODE_SPA_NA_YOCTUB\x10\x84\x80\x04'
 )
 
 
@@ -32,17 +32,17 @@ _INFORMATION_SPATYPE = _descriptor.EnumDescriptor(
   create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='HOT_TUB', index=0, number=0,
+      name='SPA_TYPE_HOT_TUB', index=0, number=0,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='COLD_TUB', index=1, number=1,
+      name='SPA_TYPE_COLD_TUB', index=1, number=1,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SAUNA', index=2, number=2,
+      name='SPA_TYPE_SAUNA', index=2, number=2,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
@@ -50,7 +50,7 @@ _INFORMATION_SPATYPE = _descriptor.EnumDescriptor(
   containing_type=None,
   serialized_options=None,
   serialized_start=696,
-  serialized_end=743,
+  serialized_end=770,
 )
 _sym_db.RegisterEnumDescriptor(_INFORMATION_SPATYPE)
 
@@ -62,75 +62,75 @@ _INFORMATION_PRODUCTCODE = _descriptor.EnumDescriptor(
   create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='COLD_TUB_COLDFIRE', index=0, number=196608,
+      name='PRODUCT_CODE_COLD_TUB_COLDFIRE', index=0, number=196608,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='COLD_TUB_LPC', index=1, number=196609,
+      name='PRODUCT_CODE_COLD_TUB_LPC', index=1, number=196609,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='PERIPHERAL_ONZEN', index=2, number=262145,
+      name='PRODUCT_CODE_PERIPHERAL_ONZEN', index=2, number=262145,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='PERIPHERAL_TOP_SIDE_A10', index=3, number=262146,
+      name='PRODUCT_CODE_PERIPHERAL_TOP_SIDE_A10', index=3, number=262146,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='PERIPHERAL_WAU', index=4, number=262144,
+      name='PRODUCT_CODE_PERIPHERAL_WAU', index=4, number=262144,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SAUNA_COLDFIRE', index=5, number=131072,
+      name='PRODUCT_CODE_SAUNA_COLDFIRE', index=5, number=131072,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SAUNA_LPC', index=6, number=131073,
+      name='PRODUCT_CODE_SAUNA_LPC', index=6, number=131073,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SPA_EURO_COLDFIRE', index=7, number=65537,
+      name='PRODUCT_CODE_SPA_EURO_COLDFIRE', index=7, number=65537,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SPA_EURO_LPC', index=8, number=65539,
+      name='PRODUCT_CODE_SPA_EURO_LPC', index=8, number=65539,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SPA_EURO_YOCTUB', index=9, number=65541,
+      name='PRODUCT_CODE_SPA_EURO_YOCTUB', index=9, number=65541,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SPA_NA_COLDFIRE', index=10, number=65536,
+      name='PRODUCT_CODE_SPA_NA_COLDFIRE', index=10, number=65536,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SPA_NA_LPC', index=11, number=65538,
+      name='PRODUCT_CODE_SPA_NA_LPC', index=11, number=65538,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
     _descriptor.EnumValueDescriptor(
-      name='SPA_NA_YOCTUB', index=12, number=65540,
+      name='PRODUCT_CODE_SPA_NA_YOCTUB', index=12, number=65540,
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=746,
-  serialized_end=1050,
+  serialized_start=773,
+  serialized_end=1246,
 )
 _sym_db.RegisterEnumDescriptor(_INFORMATION_PRODUCTCODE)
 
@@ -319,7 +319,7 @@ _INFORMATION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=22,
-  serialized_end=1050,
+  serialized_end=1246,
 )
 
 _INFORMATION.fields_by_name['spa_type'].enum_type = _INFORMATION_SPATYPE

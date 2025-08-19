@@ -1,6 +1,8 @@
 import asyncio
 import struct
+
 from enum import IntEnum
+from enum import StrEnum
 
 from arctic_spa_dc.packet import Packet
 
@@ -202,6 +204,58 @@ class ArcticSpaProtocol:
         return message, remainder
 
 
+class CommandType(StrEnum):
+    TEMPERATURE_SETPOINT_FAHRENHEIT = 'set_temperature_setpoint_fahrenheit'
+    PUMP_1 = 'set_pump_1'
+    PUMP_2 = 'set_pump_2'
+    PUMP_3 = 'set_pump_3'
+    PUMP_4 = 'set_pump_4'
+    PUMP_5 = 'set_pump_5'
+    BLOWER_1 = 'set_blower_1'
+    BLOWER_2 = 'set_blower_2'
+    LIGHTS = 'set_lights'
+    STEREO = 'set_stereo'
+    FILTER = 'set_filter'
+    ONZEN = 'set_onzen'
+    OZONE = 'set_ozone'
+    EXHAUST_FAN = 'set_exhaust_fan'
+    SAUNA_STATE = 'set_sauna_state'
+    SAUNA_TIME_LEFT = 'set_sauna_time_left'
+    ALL_ON = 'set_all_on'
+    FOGGER = 'set_fogger'
+    SPABOY_BOOST = 'set_spaboy_boost'
+    PACK_RESET = 'set_pack_reset'
+    LOG_DUMP = 'set_log_dump'
+    SDS = 'set_sds'
+    YESS = 'set_yess'
+
+
+class PumpStatus(IntEnum):
+    PUMP_OFF = 0
+    PUMP_LOW = 1
+    PUMP_HIGH = 2
+
+
+class SaunaState(IntEnum):
+    SAUNA_IDLE = 0
+    SAUNA_TIMER = 1
+    SAUNA_PRESET_A = 2
+    SAUNA_PRESET_B = 3
+    SAUNA_PRESET_C = 4
+
+
+MIN_TEMPERATURE = 59
+MAX_TEMPERATURE = 104
+
+
+def assert_connected(func):
+    async def wrapper(self, *args, **kwargs):
+        if not self.is_connected():
+            raise ConnectionError('No open connection')
+        return await func(self, *args, **kwargs)
+    return wrapper
+
+
 class ArcticSpaClient:
     """
     Interface for communicating with Arctic Spa hot tubs
@@ -214,8 +268,9 @@ class ArcticSpaClient:
         Initialize a connection by calling `.connect()` or using the `async with` keywords
         Close the connection when finished by calling `.disconnect()`
 
-        The client can be used in two ways:
-            * Calling `.poll_messages()`
+        The client can be used in a few ways:
+            * Calling `.poll_messages()` to receive multiple requested messages
+            * Calling `.fetch_one()` to receive a single requested message
             * Calling `.write_requested_messages()` and then reading
                 back with `.read_messages()` or `.read_raw_stream_data()`
         """
@@ -315,6 +370,7 @@ class ArcticSpaClient:
         packet_bytes = packet.serialize()
         return packet_bytes
 
+    @assert_connected
     async def write_requested_messages(
         self,
         message_types: MessageType | list[MessageType] | tuple[MessageType] | set[MessageType]
@@ -324,21 +380,19 @@ class ArcticSpaClient:
             and writing it over the open connection
         """
 
-        if not self.is_connected():
-            raise ConnectionError('No open connection')
-
         if isinstance(message_types, MessageType):
             message_types = [message_types]
         elif isinstance(message_types, (list, tuple)):
             message_types = set(message_types)
 
-        command_packet = b''
+        command_packet_bytes = b''
         for message_type in message_types:
-            command_packet += self._get_message_type_packet_bytes(message_type)
+            command_packet_bytes += self._get_message_type_packet_bytes(message_type)
 
-        self._writer.write(command_packet)
+        self._writer.write(command_packet_bytes)
         await self._writer.drain()
 
+    @assert_connected
     async def read_raw_stream_data(self) -> bytes:
         """
         Reads data sent over the network from the host device
@@ -346,16 +400,13 @@ class ArcticSpaClient:
 
         return await self._reader.read(4096)
 
+    @assert_connected
     async def read_messages(self) -> list[Message]:
         """
         Reads data sent over the network from the host device and returns any received and parsed protobuf messages
         """
 
-        if not self.is_connected():
-            raise ConnectionError('No open connection')
-
         data = await self.read_raw_stream_data()
-
         return self._proto.decode(data)
 
     async def _poll_messages(
@@ -379,6 +430,7 @@ class ArcticSpaClient:
 
         return requested_messages
 
+    @assert_connected
     async def poll_messages(
         self,
         message_types: MessageType | list[MessageType] | tuple[MessageType] | set[MessageType],
@@ -391,9 +443,6 @@ class ArcticSpaClient:
 
         Note: May return message types that were not requested in addition to the requested types.
         """
-
-        if not self.is_connected():
-            raise ConnectionError('No open connection')
 
         if isinstance(message_types, MessageType):
             message_types = [message_types]
@@ -411,3 +460,97 @@ class ArcticSpaClient:
         # except asyncio.TimeoutError:
 
         return messages
+
+    @assert_connected
+    async def fetch_one(
+        self,
+        message_type: MessageType,
+        timeout: float | None = 5.0
+    ) -> Message:
+        """
+        Returns only a single message requested from `.poll_messages()`
+        """
+
+        messages = await self.poll_messages(message_type, timeout=timeout)
+        message = messages[message_type]
+        return message
+
+    @staticmethod
+    def _validate_command(
+        command_type: CommandType,
+        command_value: int | bool | PumpStatus | SaunaState
+    ) -> tuple[str, int] | tuple[str, bool]:
+        """
+        Validates the requested value based on the command type being set
+        """
+
+        command_type_value_class = {
+            CommandType.TEMPERATURE_SETPOINT_FAHRENHEIT: int,
+            CommandType.PUMP_1: PumpStatus,
+            CommandType.PUMP_2: PumpStatus,
+            CommandType.PUMP_3: PumpStatus,
+            CommandType.PUMP_4: PumpStatus,
+            CommandType.PUMP_5: PumpStatus,
+            CommandType.BLOWER_1: PumpStatus,
+            CommandType.BLOWER_2: PumpStatus,
+            CommandType.LIGHTS: bool,
+            CommandType.STEREO: bool,
+            CommandType.FILTER: bool,
+            CommandType.ONZEN: bool,
+            CommandType.OZONE: bool,
+            CommandType.EXHAUST_FAN: bool,
+            CommandType.SAUNA_STATE: SaunaState,
+            CommandType.SAUNA_TIME_LEFT: int,
+            CommandType.ALL_ON: bool,
+            CommandType.FOGGER: bool,
+            CommandType.SPABOY_BOOST: bool,
+            CommandType.PACK_RESET: bool,
+            CommandType.LOG_DUMP: bool,
+            CommandType.SDS: bool,
+            CommandType.YESS: bool
+        }
+
+        value_class = command_type_value_class.get(command_type)
+
+        if not value_class:
+            raise ValueError(f'Invalid command type "{command_type}"')
+
+        elif not isinstance(command_value, value_class):
+            raise TypeError(f'Invalid type for "{command_type}"; should be "{value_class.__name__}"')
+
+        elif command_type == CommandType.TEMPERATURE_SETPOINT_FAHRENHEIT:
+            if command_value < MIN_TEMPERATURE:
+                raise ValueError(f'Invalid value of {command_value} for "{command_type}"; less than the minimum temperature of {MIN_TEMPERATURE}')
+            elif command_value > MAX_TEMPERATURE:
+                raise ValueError(f'Invalid value of {command_value} for "{command_type}"; greater than the maximum temperature of {MAX_TEMPERATURE}')
+
+        property_name = command_type.value
+        raw_value = command_value
+
+        if not isinstance(raw_value, (int, bool)):
+            raw_value = command_value.value
+
+        return property_name, raw_value
+
+    @assert_connected
+    async def write_command(
+        self,
+        command_type: CommandType,
+        command_value: int | bool | PumpStatus | SaunaState
+    ) -> None:
+        """
+        Validates the requested update, then crafts and sends a command packet to the host device
+        """
+
+        property_name, raw_value = self._validate_command(command_type, command_value)
+
+        command = Command_pb2.Command()
+        setattr(command, property_name, raw_value)
+
+        buffer = command.SerializeToString()
+
+        command_packet = Packet(MessageType.COMMAND.value, buffer)
+        command_packet_bytes = command_packet.serialize()
+
+        self._writer.write(command_packet_bytes)
+        await self._writer.drain()

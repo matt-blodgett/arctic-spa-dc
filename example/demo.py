@@ -5,6 +5,8 @@ import asyncio
 from arctic_spa_dc.discovery import NetworkSearch
 from arctic_spa_dc.client import ArcticSpaClient
 from arctic_spa_dc.client import MessageType
+from arctic_spa_dc.client import CommandType
+from arctic_spa_dc.client import PumpStatus
 
 
 def get_ip() -> str:
@@ -76,13 +78,28 @@ async def get_arctic_spa_client() -> ArcticSpaClient:
     return arctic_spa_client
 
 
+async def test_commands():
+    arctic_spa_client = await get_arctic_spa_client()
+
+    await arctic_spa_client.write_command(CommandType.PUMP_1, PumpStatus.PUMP_HIGH)
+    await asyncio.sleep(2)
+
+    await arctic_spa_client.write_command(CommandType.LIGHTS, True)
+    await asyncio.sleep(2)
+
+    message = await arctic_spa_client.fetch_one(MessageType.LIVE)
+
+    print(message)
+
+    await arctic_spa_client.disconnect()
+
+
 async def main():
     arctic_spa_client = await get_arctic_spa_client()
 
     print('getting messages...')
 
-    messages = await arctic_spa_client.poll_messages(MessageType.LIVE)
-    message = messages[MessageType.LIVE]
+    message = await arctic_spa_client.fetch_one(MessageType.LIVE)
 
     print()
     print('Live')
@@ -111,8 +128,7 @@ async def main():
     print('fogger -', message.fogger)
     print()
 
-    messages = await arctic_spa_client.poll_messages(MessageType.ONZEN_LIVE)
-    message = messages[MessageType.ONZEN_LIVE]
+    message = await arctic_spa_client.fetch_one(MessageType.ONZEN_LIVE)
 
     print()
     print('OnzenLive')
@@ -140,8 +156,7 @@ async def main():
     print('electrode_wear -', message.electrode_wear)
     print()
 
-    messages = await arctic_spa_client.poll_messages(MessageType.CONFIGURATION)
-    message = messages[MessageType.CONFIGURATION]
+    message = await arctic_spa_client.fetch_one(MessageType.CONFIGURATION)
 
     print()
     print('Configuration')
@@ -169,8 +184,7 @@ async def main():
     print('yess -', message.yess)
     print()
 
-    messages = await arctic_spa_client.poll_messages(MessageType.INFORMATION)
-    message = messages[MessageType.INFORMATION]
+    message = await arctic_spa_client.fetch_one(MessageType.INFORMATION)
 
     print()
     print('Information')
@@ -199,8 +213,7 @@ async def main():
     print('rfid_serial_number -', message.rfid_serial_number)
     print()
 
-    messages = await arctic_spa_client.poll_messages(MessageType.SETTINGS)
-    message = messages[MessageType.SETTINGS]
+    message = await arctic_spa_client.fetch_one(MessageType.SETTINGS)
 
     print()
     print('Settings')
