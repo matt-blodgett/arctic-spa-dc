@@ -176,17 +176,17 @@ class ArcticSpaProtocol:
         Decodes the first message of the data and return any undecoded data
         """
 
-        if len(data) < SpaProtocol.HEADER_SIZE:
-            raise DecodeError(f'Expecting at least {SpaProtocol.HEADER_SIZE} bytes, got {len(data)}')
+        if len(data) < ArcticSpaProtocol.HEADER_SIZE:
+            raise DecodeError(f'Expecting at least {ArcticSpaProtocol.HEADER_SIZE} bytes, got {len(data)}')
 
-        if data[0:4] != SpaProtocol.PREAMBLE:
+        if data[0:4] != ArcticSpaProtocol.PREAMBLE:
             raise DecodeError('Data does not start with correct preamble')
 
-        header = struct.unpack('!xxxxBBBBIIHH', data[0:SpaProtocol.HEADER_SIZE])
+        header = struct.unpack('!xxxxBBBBIIHH', data[0:ArcticSpaProtocol.HEADER_SIZE])
 
         message_type = MessageType(header[6])
         length = header[7]
-        payload = data[SpaProtocol.HEADER_SIZE : (SpaProtocol.HEADER_SIZE + length)]
+        payload = data[ArcticSpaProtocol.HEADER_SIZE : (ArcticSpaProtocol.HEADER_SIZE + length)]
 
         message = None
 
@@ -197,7 +197,7 @@ class ArcticSpaProtocol:
             if message_type in Message.MESSAGE_TYPE_DECODERS:
                 message = Message(message_type, counter, checksum, payload)
 
-        remainder = data[SpaProtocol.HEADER_SIZE + length :]
+        remainder = data[ArcticSpaProtocol.HEADER_SIZE + length :]
 
         return message, remainder
 
