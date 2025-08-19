@@ -1,3 +1,13 @@
+"""
+Usage:
+    For automatic discovery of your hot tub:
+        python demo.py
+
+    Optionally, specify an IP address:
+        python demo.py "192.168.0.0"
+"""
+
+
 import sys
 import socket
 import asyncio
