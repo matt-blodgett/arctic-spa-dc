@@ -2,8 +2,26 @@ import asyncio
 import struct
 from enum import IntEnum
 
-from arctic_spa_dc.proto import arctic_spa_dc_pb2
 from arctic_spa_dc.packet import Packet
+
+from arctic_spa_dc.proto import Live_pb2
+from arctic_spa_dc.proto import Command_pb2
+from arctic_spa_dc.proto import Settings_pb2
+from arctic_spa_dc.proto import Configuration_pb2
+from arctic_spa_dc.proto import Peak_pb2
+from arctic_spa_dc.proto import Clock_pb2
+from arctic_spa_dc.proto import Information_pb2
+from arctic_spa_dc.proto import Error_pb2
+from arctic_spa_dc.proto import Router_pb2
+from arctic_spa_dc.proto import Filter_pb2
+from arctic_spa_dc.proto import Peripheral_pb2
+from arctic_spa_dc.proto import OnzenLive_pb2
+from arctic_spa_dc.proto import OnzenSettings_pb2
+from arctic_spa_dc.proto import MobileAuthenticate_pb2
+from arctic_spa_dc.proto import MobileAvailableSpas_pb2
+from arctic_spa_dc.proto import MobileSpaRegistration_pb2
+from arctic_spa_dc.proto import MobileWifiDetails_pb2
+from arctic_spa_dc.proto import Lpc_pb2
 
 
 class MessageType(IntEnum):
@@ -56,15 +74,42 @@ class Message:
     """
 
     MESSAGE_TYPE_DECODERS = {
-        MessageType.LIVE: arctic_spa_dc_pb2.SpaLive,
-        MessageType.SETTINGS: arctic_spa_dc_pb2.Settings,
-        MessageType.CONFIGURATION: arctic_spa_dc_pb2.Configuration,
-        MessageType.INFORMATION: arctic_spa_dc_pb2.Information,
-        MessageType.ONZEN_LIVE: arctic_spa_dc_pb2.OnzenLive
+        MessageType.LIVE: Live_pb2.Live,
+        MessageType.COMMAND: Command_pb2.Command,
+        MessageType.SETTINGS: Settings_pb2.Settings,
+        MessageType.CONFIGURATION: Configuration_pb2.Configuration,
+        MessageType.PEAK: Peak_pb2.Peak,
+        MessageType.CLOCK: Clock_pb2.Clock,
+        MessageType.INFORMATION: Information_pb2.Information,
+        MessageType.ERROR: Error_pb2.Error,
+        MessageType.ROUTER: Router_pb2.Router,
+        MessageType.FILTERS: Filter_pb2.Filter,
+        MessageType.PERIPHERAL: Peripheral_pb2.Peripheral,
+        MessageType.ONZEN_LIVE: OnzenLive_pb2.OnzenLive,
+        MessageType.ONZEN_SETTINGS: OnzenSettings_pb2.OnzenSettings,
+        MessageType.MOBILE_AUTHENTICATE: MobileAuthenticate_pb2.MobileAuthenticate,
+        MessageType.MOBILE_AVAILABLE_SPAS: MobileAvailableSpas_pb2.MobileAvailableSpas,
+        MessageType.MOBILE_SPA_REGISTRATION: MobileSpaRegistration_pb2.MobileSpaRegistration,
+        MessageType.MOBILE_WIFI_DETAILS: MobileWifiDetails_pb2.MobileWifiDetails,
+        MessageType.lpc_live: Lpc_pb2.lpc_live,
+        MessageType.lpc_command: Lpc_pb2.lpc_command,
+        MessageType.lpc_info: Lpc_pb2.lpc_info,
+        MessageType.lpc_config: Lpc_pb2.lpc_config,
+        MessageType.lpc_preferences: Lpc_pb2.lpc_preferences,
+        MessageType.lpc_lights: Lpc_pb2.lpc_lights,
+        MessageType.lpc_schedule: Lpc_pb2.lpc_schedule,
+        MessageType.lpc_peak_devices: Lpc_pb2.lpc_peak_devices,
+        MessageType.lpc_clock: Lpc_pb2.lpc_clock,
+        MessageType.lpc_error: Lpc_pb2.lpc_error,
+        MessageType.lpc_measurements: Lpc_pb2.lpc_measurements,
+        MessageType.lpc_diagnostic_command: Lpc_pb2.lpc_diagnostic_command,
+        MessageType.lpc_power: Lpc_pb2.lpc_power
     }
 
     def __init__(self, message_type: MessageType, counter: int, checksum: bytes, payload: bytes):
-        if message_type not in self.MESSAGE_TYPE_DECODERS:
+        self.decoder = self.MESSAGE_TYPE_DECODERS.get(message_type)
+
+        if not self.decoder:
             raise ValueError(f'No protobuf class defined to decode message type "{message_type.name}"')
 
         self.message_type = message_type
@@ -74,12 +119,7 @@ class Message:
         self.data = self._decode(payload)
 
     def _decode(self, payload: bytes):
-        decoder_class = self.MESSAGE_TYPE_DECODERS.get(self.message_type)
-
-        if not decoder_class:
-            raise ValueError(f'No protobuf class defined to decode message type "{self.message_type.name}"')
-
-        data = decoder_class()
+        data = self.decoder()
         data.ParseFromString(payload)
         return data
 
@@ -106,9 +146,9 @@ class DecodeError(Exception):
         super().__init__(reason_str)
 
 
-class SpaProtocol:
+class ArcticSpaProtocol:
     """
-    Spa network protocol decoder
+    Network protocol decoder
     """
 
     HEADER_SIZE = 20
@@ -183,7 +223,7 @@ class ArcticSpaClient:
         self.host = host
         self.port = port or 65534
 
-        self._proto = SpaProtocol()
+        self._proto = ArcticSpaProtocol()
 
         self._reader = None
         self._writer = None

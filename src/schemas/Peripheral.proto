@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+message Peripheral {
+  enum PeripheralProductCode {
+    PERIPHERAL_PRODUCT_CODE_NONE = 0;
+    PERIPHERAL_PRODUCT_CODE_SPA = 1;
+    PERIPHERAL_PRODUCT_CODE_TOPSIDE = 2;
+    PERIPHERAL_PRODUCT_CODE_ONZEN = 3;
+    PERIPHERAL_PRODUCT_CODE_WAA = 4;
+  }
+
+  optional string guid = 1;
+  optional int32 hardware_version = 2;
+  optional int32 firmware_version = 3;
+  optional PeripheralProductCode product_code = 4;
+  optional bool connected = 5;
+}

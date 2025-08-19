@@ -1,0 +1,72 @@
+syntax = "proto2";
+
+message Live {
+  enum PumpStatus {
+    PUMP_OFF = 0;
+    PUMP_LOW = 1;
+    PUMP_HIGH = 2;
+  }
+
+  enum HeaterStatus {
+    HEATER_IDLE = 0;
+    HEATER_WARMUP = 1;
+    HEATER_HEATING = 2;
+    HEATER_COOLDOWN = 3;
+  }
+
+  enum FilterStatus {
+    FILTER_IDLE = 0;
+    FILTER_PURGE = 1;
+    FILTER_FILTERING = 2;
+    FILTER_SUSPENDED = 3;
+    FILTER_OVER_TEMPERATURE = 4;
+    FILTER_RESUMING = 5;
+    FILTER_BOOST = 6;
+    FILTER_SANITIZE = 7;
+  }
+
+  enum OzoneStatus {
+    OZONE_IDLE = 0;
+    OZONE_ACTIVE = 1;
+    OZONE_SUSPENDED = 2;
+  }
+
+  enum SaunaStatus {
+    SAUNA_NORMAL = 0;
+    SAUNA_PRESET_A = 1;
+    SAUNA_PRESET_B = 2;
+    SAUNA_PRESET_C = 3;
+  }
+
+  optional int32 temperature_fahrenheit = 1;
+  optional int32 temperature_setpoint_fahrenheit = 2;
+  optional PumpStatus pump_1 = 3;
+  optional PumpStatus pump_2 = 4;
+  optional PumpStatus pump_3 = 5;
+  optional PumpStatus pump_4 = 6;
+  optional PumpStatus pump_5 = 7;
+  optional PumpStatus blower_1 = 8;
+  optional PumpStatus blower_2 = 9;
+  optional bool lights = 10;
+  optional bool stereo = 11;
+  optional HeaterStatus heater_1 = 12;
+  optional HeaterStatus heater_2 = 13;
+  optional FilterStatus filter = 14;
+  optional bool onzen = 15;
+  optional OzoneStatus ozone = 16;
+  optional bool exhaust_fan = 17;
+  optional SaunaStatus sauna = 18;
+  optional int32 heater_adc = 20;
+  optional int32 sauna_time_remaining = 21;
+  optional bool economy = 22;
+  optional int32 current_adc = 23;
+  optional bool all_on = 24;
+  optional bool fogger = 25;
+  optional int32 error = 26;
+  optional int32 alarm = 27;
+  optional int32 status = 28;
+  optional int32 ph = 29;
+  optional int32 orp = 30;
+  optional bool sds = 31;
+  optional bool yess = 32;
+}

@@ -1,0 +1,41 @@
+syntax = "proto2";
+
+message Command {
+  enum SetPumpStatus {
+    PUMP_OFF = 0;
+    PUMP_LOW = 1;
+    PUMP_HIGH = 2;
+  }
+
+  enum SetSaunaState {
+    SAUNA_IDLE = 0;
+    SAUNA_TIMER = 1;
+    SAUNA_PRESET_A = 2;
+    SAUNA_PRESET_B = 3;
+    SAUNA_PRESET_C = 4;
+  }
+
+  optional int32 set_temperature_setpoint_fahrenheit = 1;
+  optional SetPumpStatus set_pump_1 = 2;
+  optional SetPumpStatus set_pump_2 = 3;
+  optional SetPumpStatus set_pump_3 = 4;
+  optional SetPumpStatus set_pump_4 = 5;
+  optional SetPumpStatus set_pump_5 = 6;
+  optional SetPumpStatus set_blower_1 = 7;
+  optional SetPumpStatus set_blower_2 = 8;
+  optional bool set_lights = 9;
+  optional bool set_stereo = 10;
+  optional bool set_filter = 11;
+  optional bool set_onzen = 12;
+  optional bool set_ozone = 13;
+  optional bool set_exhaust_fan = 14;
+  optional SetSaunaState set_sauna_state = 15;
+  optional int32 set_sauna_time_left = 16;
+  optional bool all_on = 17;
+  optional bool set_fogger = 18;
+  optional bool spaboy_boost = 19;
+  optional bool pack_reset = 20;
+  optional bool log_dump = 21;
+  optional bool set_sds = 22;
+  optional bool set_yess = 23;
+}

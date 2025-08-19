@@ -1,0 +1,422 @@
+syntax = "proto2";
+
+enum PumpStatus {
+  PUMP_OFF = 0;
+  PUMP_LOW = 1;
+  PUMP_HIGH = 2;
+}
+
+enum BlowerStatus {
+  BLOWER_OFF = 0;
+  BLOWER_ON = 1;
+}
+
+enum HeatChillerStatus {
+  HEAT_IDLE = 0;
+  HEAT_WARMUP = 1;
+  HEAT_HEATING = 2;
+  HEAT_COOLDOWN = 3;
+  HEAT_CHILLING = 4;
+}
+
+enum FilterStatus {
+  FILTER_IDLE = 0;
+  FILTER_PURGE = 1;
+  FILTER_FILTERING = 2;
+  FILTER_SUSPENDED = 3;
+  FILTER_BOOST = 4;
+}
+
+enum OzoneStatus {
+  OZONE_IDLE = 0;
+  OZONE_ACTIVE = 1;
+  OZONE_SUSPENDED = 2;
+}
+
+enum OnzenStatus {
+  ONZEN_IDLE = 0;
+  ONZEN_ACTIVE = 1;
+  ONZEN_SUSPENDED = 2;
+}
+
+enum ProductCodes {
+  SPA_NA_COLDFIRE = 65536;
+  SPA_EURO_COLDFIRE = 65537;
+  SPA_NA_LPC = 65538;
+  SPA_EURO_LPC = 65539;
+  SAUNA_COLDFIRE = 131072;
+  SAUNA_LPC = 131073;
+  COLD_TUB_COLDFIRE = 196608;
+  COLD_TUB_LPC = 196609;
+  PERIPHERAL_WAU = 262144;
+  PERIPHERAL_ONZEN = 262145;
+  PERIPHERAL_TOP_SIDE_A10 = 262146;
+}
+
+enum ArcticBrand {
+  ARCTIC_BRAND_ARCTIC = 0;
+  ARCTIC_BRAND_COYOTE = 1;
+  ARCTIC_BRAND_APOLLO = 2;
+  ARCTIC_BRAND_COLDTUB = 3;
+}
+
+enum Speed {
+  SPEED_GONE = 0;
+  SPEED_ONE = 1;
+  SPEED_TWO = 2;
+}
+
+enum Phase {
+  PHASE_TRUE_THREE = 0;
+  PHASE_SINGLE = 1;
+  PHASE_TWO = 2;
+  PHASE_THREE = 3;
+}
+
+enum TemperatureUnit {
+  TEMPERATURE_FAHRENHEIT = 0;
+  TEMPERATURE_CELSIUS = 1;
+}
+
+enum LightsEffect {
+  LIGHTS_EFFECT_NONE = 0;
+  LIGHTS_EFFECT_FADE = 1;
+  LIGHTS_EFFECT_SCROLL = 2;
+  LIGHTS_EFFECT_STROBE = 3;
+}
+
+enum ScheduleType {
+  SCHEDULE_OZONE = 0;
+  SCHEDULE_FILTRATION = 1;
+  SCHEDULE_ONZEN = 2;
+  SCHEDULE_OFF_PEAK = 3;
+  SCHEDULE_MID_PEAK = 4;
+  SCHEDULE_PEAK = 5;
+}
+
+enum ERROR_CODE {
+  ERROR_CODE_NONE = 0;
+  NO_FLOW = 1;
+  FLOW_SWITCH = 2;
+  WATER_OVER_TEMP = 3;
+  WATER_TEMP_PROBE = 4;
+  HEATER_HIGH_LIMIT = 5;
+  HEATER_OVER_TEMP = 6;
+  HEATER_TEMP_PROBE = 7;
+  FLOW_OVER_TEMP = 8;
+  FLOW_TEMP_PROBE = 9;
+  RELAY_K1_DAMAGED = 10;
+  RELAY_K2_DAMAGED = 11;
+  RELAY_K3_DAMAGED = 12;
+  RELAY_K4_DAMAGED = 13;
+  RELAY_K5_DAMAGED = 14;
+  RELAY_K6_DAMAGED = 15;
+  RELAY_K7_DAMAGED = 16;
+  RELAY_K8_DAMAGED = 17;
+  RELAY_K9_DAMAGED = 18;
+  RELAY_K10_DAMAGED = 19;
+  RELAY_K11_DAMAGED = 20;
+  RELAY_K12_DAMAGED = 21;
+  RELAY_K13_DAMAGED = 22;
+  RELAY_K14_DAMAGED = 23;
+  RELAY_K15_16_DAMAGED = 24;
+  RELAY_K17_DAMAGED = 25;
+  PUMP_1_LOW_FUSE_BLOWN = 26;
+  PUMP_1_HIGH_FUSE_BLOWN = 27;
+  PUMP_2_FUSE_BLOWN = 28;
+  PUMP_3_FUSE_BLOWN = 29;
+  PUMP_4_FUSE_BLOWN = 30;
+  PUMP_5_FUSE_BLOWN = 31;
+  BLOWER_1_FUSE_BLOWN = 32;
+  BLOWER_2_FUSE_BLOWN = 33;
+  HEATER_FUSE_BLOWN = 34;
+  PUMP_1_LOW_OVERCURRENT = 35;
+  PUMP_1_HIGH_OVERCURRENT = 36;
+  PUMP_2_OVERCURRENT = 37;
+  PUMP_3_OVERCURRENT = 38;
+  PUMP_4_OVERCURRENT = 39;
+  PUMP_5_OVERCURRENT = 40;
+  BLOWER_1_OVERCURRENT = 41;
+  BLOWER_2_OVERCURRENT = 42;
+  HEATER_OVERCURRENT = 43;
+  PUMP_HEATER_RUNNING = 65536;
+  PUMP_NOT_CONFIGURED = 65537;
+  PUMP_RELAY_DISABLED = 65538;
+  PUMP_EXCEEDS_BREAKER = 65539;
+  BLOWER_NOT_CONFIGURED = 65540;
+  BLOWER_RELAY_DISABLED = 65541;
+  BLOWER_EXCEED_BREAKER = 65542;
+  HEATER_DISABLED_PEAK = 65543;
+  FILTER_DISABLED_PEAK = 65544;
+  OZONE_DISABLED_PEAK = 65545;
+  ONZEN_DISABLED_PEAK = 65546;
+  HEATER_DISABLED_MIDPEAK = 65547;
+  FILTER_DISABLED_MIDPEAK = 65548;
+  OZONE_DISABLED_MIDPEAK = 65549;
+  ONZEN_DISABLED_MIDPEAK = 65550;
+  PH_HIGH = 65551;
+  HEATER_PROBE_DISCONNECTED = 65552;
+}
+
+enum RELAY_ENUM {
+  RELAY_K1 = 0;
+  RELAY_K2 = 1;
+  RELAY_K3 = 2;
+  RELAY_K4 = 3;
+  RELAY_K5 = 4;
+  RELAY_K6 = 5;
+  RELAY_K7 = 6;
+  RELAY_K8 = 7;
+  RELAY_K9 = 8;
+  RELAY_K10 = 9;
+  RELAY_K14 = 10;
+  RELAY_K17 = 11;
+  RELAY_DEFAULT = 12;
+}
+
+enum DEVICE_ENUM {
+  DEVICE_PUMP1 = 0;
+  DEVICE_PUMP2 = 1;
+  DEVICE_PUMP3 = 2;
+  DEVICE_PUMP4 = 3;
+  DEVICE_PUMP5 = 4;
+  DEVICE_BLOWER1 = 5;
+  DEVICE_BLOWER2 = 6;
+  DEVICE_HEATER = 7;
+  DEVICE_OZONE1 = 8;
+  DEVICE_OZONE2 = 9;
+  DEVICE_ONZEN = 10;
+  DEVICE_FAN = 11;
+  DEVICE_LAST = 12;
+}
+
+message lpc_live {
+  optional int32 temperature = 1;
+  optional PumpStatus pump_1 = 2;
+  optional PumpStatus pump_2 = 3;
+  optional PumpStatus pump_3 = 4;
+  optional PumpStatus pump_4 = 5;
+  optional PumpStatus pump_5 = 6;
+  optional BlowerStatus blower_1 = 7;
+  optional BlowerStatus blower_2 = 8;
+  optional bool exhaust_fan = 9;
+  optional bool audio = 10;
+  optional bool lights = 11;
+  optional bool stand_by = 12;
+  optional HeatChillerStatus heater = 13;
+  optional FilterStatus filter = 14;
+  optional OzoneStatus ozone = 15;
+  optional OnzenStatus onzen = 16;
+  optional bool freeze_protect = 17;
+  optional bool econo_heater_disabled = 18;
+  optional bool econo_filter_disabled = 19;
+  optional bool econo_ozone_disabled = 20;
+  optional bool econo_onzen_disabled = 21;
+  optional bool lights2 = 22;
+}
+
+message lpc_command {
+  optional PumpStatus pump_1 = 2;
+  optional PumpStatus pump_2 = 3;
+  optional PumpStatus pump_3 = 4;
+  optional PumpStatus pump_4 = 5;
+  optional PumpStatus pump_5 = 6;
+  optional BlowerStatus blower_1 = 7;
+  optional BlowerStatus blower_2 = 8;
+  optional bool exhaust_fan = 9;
+  optional bool lights = 10;
+  optional bool stand_by = 11;
+  optional bool filter = 13;
+  optional bool ozone = 14;
+  optional bool onzen = 15;
+  optional bool boost = 16;
+  optional bool econo = 17;
+  optional bool lights2 = 18;
+}
+
+message lpc_info {
+  optional string guid = 1;
+  optional int32 firmware_version = 2;
+  optional int32 hardware_version = 3;
+  optional ProductCodes product_code = 4;
+  optional ArcticBrand brand = 5;
+  optional int32 temperature_max = 6;
+  optional int32 temperature_min = 7;
+  optional int32 temperature_offset = 8;
+  optional string blue_falls_serial_number = 9;
+  optional string blue_falls_model_name = 10;
+  optional int32 available_firmware_version = 11;
+}
+
+message lpc_config {
+  optional Speed pump_1 = 1;
+  optional Speed pump_2 = 2;
+  optional Speed pump_3 = 3;
+  optional Speed pump_4 = 4;
+  optional Speed pump_5 = 5;
+  optional Speed blower_1 = 6;
+  optional Speed blower_2 = 7;
+  optional bool ozone1 = 8;
+  optional bool ozone2 = 9;
+  optional bool onzen = 10;
+  optional bool exhaust_fan = 11;
+}
+
+message lpc_power {
+  optional Phase power = 1;
+  optional int32 breaker_size = 2;
+}
+
+message lpc_preferences {
+  optional int32 temperature_setpoint32 = 1;
+  optional TemperatureUnit temperature_display_unit = 2;
+  optional bool flash_lights_on_error = 3;
+  optional bool filter_suspend_on_overtemp = 4;
+}
+
+message lpc_lights {
+  optional int32 rgb = 1;
+  optional LightsEffect effect = 2;
+}
+
+message lpc_schedule {
+  optional int32 index = 1;
+  optional ScheduleType type = 2;
+  optional int32 start = 3;
+  optional int32 duration = 4;
+  optional bool enabled = 5;
+  optional bool sunday = 6;
+  optional bool monday = 7;
+  optional bool tuesday = 8;
+  optional bool wednesday = 9;
+  optional bool thursday = 10;
+  optional bool friday = 11;
+  optional bool saturday = 12;
+}
+
+message lpc_clock {
+  optional int32 second = 1;
+  optional int32 minute = 2;
+  optional int32 hour = 3;
+  optional int32 day_of_month = 4;
+  optional int32 day_of_week = 5;
+  optional int32 day_of_year = 6;
+  optional int32 month = 7;
+  optional int32 year = 8;
+  optional bool valid = 9;
+}
+
+message lpc_measurements {
+  optional int32 current_board = 1;
+  optional int32 current_high_power = 2;
+  optional int32 voltage_line_1 = 3;
+  optional int32 voltage_line_2 = 4;
+  optional int32 voltage_line_3 = 5;
+  optional int32 temperature_board = 6;
+  optional int32 temperature_water = 7;
+  optional int32 temperature_heater = 8;
+  optional int32 temperature_flow = 9;
+  optional int32 current_board_raw = 10;
+  optional int32 current_high_power_raw = 11;
+  optional int32 voltage_line_1_raw = 12;
+  optional int32 voltage_line_2_raw = 13;
+  optional int32 voltage_line_3_raw = 14;
+  optional int32 temperature_board_raw = 15;
+  optional int32 temperature_water_raw = 16;
+  optional int32 temperature_heater_raw = 17;
+  optional int32 temperature_flow_raw = 18;
+  optional int32 heater_voltage_line_1 = 19;
+  optional int32 heater_voltage_line_2 = 20;
+  optional int32 heater_voltage_line_1_raw = 21;
+  optional int32 heater_voltage_line_2_raw = 22;
+  optional int32 heater_voltage = 23;
+  optional int32 heater_voltage_raw = 24;
+}
+
+message lpc_peak_devices {
+  optional bool peak_heater = 1;
+  optional bool peak_filter = 2;
+  optional bool peak_ozone = 3;
+  optional bool peak_onzen = 4;
+  optional bool mid_peak_heater = 5;
+  optional bool mid_peak_filter = 6;
+  optional bool mid_peak_ozone = 7;
+  optional bool mid_peak_onzen = 8;
+  optional bool off_peak_heater = 9;
+  optional bool off_peak_filter = 10;
+  optional bool off_peak_ozone = 11;
+  optional bool off_peak_onzen = 12;
+}
+
+message lpc_error {
+  repeated ERROR_CODE error = 1;
+  optional ERROR_CODE warning = 2;
+  optional ERROR_CODE info = 3;
+  optional ERROR_CODE debug = 4;
+}
+
+message relay_status {
+  optional RELAY_ENUM relay = 1;
+  optional int32 load = 2;
+  optional bool enabled = 3;
+}
+
+message lpc_device_status {
+  optional DEVICE_ENUM device = 1;
+  optional int32 speed = 2;
+  optional bool configured = 3;
+  repeated relay_status relays = 4;
+}
+
+message lpc_diagnostic_command {
+  optional bool run_full_diagnostic = 1;
+  optional RELAY_ENUM test_device = 2;
+  optional bool diagnostic_state = 3;
+}
+
+message debug {
+  optional int32 debug1 = 1;
+  optional int32 debug2 = 2;
+  optional int32 debug3 = 3;
+  optional int32 debug4 = 4;
+  optional int32 debug5 = 5;
+  optional int32 debug6 = 6;
+  optional int32 debug7 = 7;
+  optional int32 debug8 = 8;
+  optional int32 debug9 = 9;
+  optional int32 debug10 = 10;
+}
+
+message relay_debug {
+  optional bool relay1 = 1;
+  optional bool relay2 = 2;
+  optional bool relay3 = 3;
+  optional bool relay4 = 4;
+  optional bool relay5 = 5;
+  optional bool relay6 = 6;
+  optional bool relay7 = 7;
+  optional bool relay8 = 8;
+  optional bool relay9 = 9;
+  optional bool relay10 = 10;
+  optional bool relay11 = 11;
+  optional bool relay12 = 12;
+  optional bool relay13 = 13;
+  optional bool relay14 = 14;
+  optional bool relay15 = 15;
+  optional bool relay16 = 16;
+}
+
+message lpc_load {
+  optional int32 relay_k1 = 1;
+  optional int32 relay_k2 = 2;
+  optional int32 relay_k3 = 3;
+  optional int32 relay_k4 = 4;
+  optional int32 relay_k5 = 5;
+  optional int32 relay_k6 = 6;
+  optional int32 relay_k7 = 7;
+  optional int32 relay_k8 = 8;
+  optional int32 relay_k9 = 9;
+  optional int32 relay_k10 = 10;
+  optional int32 relay_k14 = 11;
+  optional int32 relay_k17 = 12;
+}

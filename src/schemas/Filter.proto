@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+message Filter {
+  enum FilterState {
+    FILTER_PURCHASE = 0;
+    FILTER_ADD_MFG = 1;
+    FILTER_PRESENT = 2;
+  }
+
+  optional string serial_nums = 1;
+  optional FilterState filter_state = 2;
+  optional string install_dates = 3;
+}

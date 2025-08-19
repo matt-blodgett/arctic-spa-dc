@@ -1,0 +1,30 @@
+syntax = "proto2";
+
+message Peak {
+  optional int32 peaknum = 1;
+  optional int32 peakstart1 = 2;
+  optional int32 peakend1 = 3;
+  optional int32 peakstart2 = 4;
+  optional int32 peakend2 = 5;
+  optional int32 midpeaknum = 6;
+  optional int32 midpeakstart1 = 7;
+  optional int32 midpeakend1 = 8;
+  optional int32 midpeakstart2 = 9;
+  optional int32 midpeakend2 = 10;
+  optional int32 offpeakstart = 11;
+  optional int32 offpeakend = 12;
+  optional int32 offset = 13;
+  optional bool peakheater = 14;
+  optional bool peakfilter = 15;
+  optional bool peakozone = 16;
+  optional bool midpeakheater = 17;
+  optional bool midpeakfilter = 18;
+  optional bool midpeakozone = 19;
+  optional bool sat = 20;
+  optional bool sun = 21;
+  optional bool mon = 22;
+  optional bool tue = 23;
+  optional bool wed = 24;
+  optional bool thu = 25;
+  optional bool fri = 26;
+}

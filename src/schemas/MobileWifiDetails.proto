@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+message MobileWifiDetails {
+  enum WifiDetailsStatus {
+    WIFI_DETAILS_SUCCESS = 0;
+    WIFI_DETAILS_FAILURE = 1;
+  }
+
+  optional string ssid = 1;
+  optional string password = 2;
+  optional WifiDetailsStatus wifi_details_status = 3;
+  optional string localssid = 4;
+  optional string securitytype = 5;
+}

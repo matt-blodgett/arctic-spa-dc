@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+message MobileAuthenticate {
+  enum AuthenticateStatus {
+    AUTHENTICATE_SUCCESS = 0;
+    AUTHENTICATE_FAILURE = 1;
+  }
+
+  optional string username = 1;
+  optional string salt = 2;
+  optional string hash = 3;
+  optional AuthenticateStatus auth_status = 4;
+}

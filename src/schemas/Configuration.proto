@@ -1,0 +1,33 @@
+syntax = "proto2";
+
+message Configuration {
+  enum Phase {
+    PHASE_TRUE_THREE = 0;
+    PHASE_SINGLE = 1;
+    PHASE_TWO = 2;
+    PHASE_THREE = 3;
+  }
+
+  optional bool pump1 = 1;
+  optional bool pump2 = 2;
+  optional bool pump3 = 3;
+  optional bool pump4 = 4;
+  optional bool pump5 = 5;
+  optional bool blower1 = 6;
+  optional bool blower2 = 7;
+  optional bool lights = 8;
+  optional bool stereo = 9;
+  optional bool heater1 = 10;
+  optional bool heater2 = 11;
+  optional bool filter = 12;
+  optional bool onzen = 13;
+  optional bool ozone_peak_1 = 14;
+  optional bool ozone_peak_2 = 15;
+  optional bool exhaust_fan = 16;
+  optional Phase powerlines = 17;
+  optional int32 breaker_size = 18;
+  optional int32 smart_onzen = 19;
+  optional bool fogger = 20;
+  optional bool sds = 21;
+  optional bool yess = 22;
+}

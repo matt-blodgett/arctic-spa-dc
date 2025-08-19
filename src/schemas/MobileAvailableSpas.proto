@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+message MobileAvailableSpas {
+  optional string guid = 1;
+  optional string packproductid = 2;
+  optional int32 productcode = 3;
+  optional string nickname = 4;
+  optional bool connected = 5;
+  optional string serverid = 6;
+}

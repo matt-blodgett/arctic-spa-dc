@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+message MobileSpaRegistration {
+  enum RegistrationStatus {
+    REGISTRATION_SUCCESS = 0;
+    REGISTRATION_FAILURE = 1;
+    REGISTRATION_SPA_OFFLINE = 2;
+  }
+
+  optional string registration_code = 1;
+  optional string serial_number = 2;
+  optional string spa_nickname = 3;
+  optional RegistrationStatus reg_status = 4;
+  optional string spa_guid = 5;
+}

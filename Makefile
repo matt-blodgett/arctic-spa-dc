@@ -1,13 +1,17 @@
-compile: src/arctic_spa_dc/proto/arctic_spa_dc_pb2.py
+proto_dest=src/arctic_spa_dc/proto
+proto_src=src/schemas
 
-proto_out=src/arctic_spa_dc/proto
+protos=$(wildcard $(proto_src)/*.proto)
+py_protos=$(patsubst $(proto_src)/%.proto,$(proto_dest)/%_pb2.py,$(protos))
 
-$(proto_out):
+compile: $(py_protos)
+
+$(proto_dest):
 	mkdir -p $@
 
-$(proto_out)/arctic_spa_dc_pb2.py: src/arctic_spa_dc.proto $(proto_out)
-	protoc --python_out=$(proto_out) -Isrc $<
+$(proto_dest)/%_pb2.py: $(proto_src)/%.proto | $(proto_dest)
+	protoc --python_out=$(proto_dest) -I$(proto_src) $<
 
 clean:
-	rm -rf $(proto_out)
+	rm -rf $(proto_dest)
 	rm -rf dist/

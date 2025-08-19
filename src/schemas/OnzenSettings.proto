@@ -1,0 +1,27 @@
+syntax = "proto2";
+
+message OnzenSettings {
+  optional string guid = 1;
+  optional int32 over_voltage = 2;
+  optional int32 under_voltage = 3;
+  optional int32 over_current = 4;
+  optional int32 under_current = 5;
+  optional int32 orp_high = 6;
+  optional int32 orp_low = 7;
+  optional int32 ph_high = 8;
+  optional int32 ph_low = 9;
+  optional int32 pwm_pump1_time_on = 10;
+  optional int32 pwm_pump1_time_off = 11;
+  optional int32 sampling_interval = 12;
+  optional int32 sampling_duration = 13;
+  optional int32 pwm_pump2_time_on = 14;
+  optional int32 pwm_pump2_time_off = 15;
+  optional int32 sb_low_cl = 16;
+  optional int32 sb_caution_low_cl = 17;
+  optional int32 sb_caution_high_cl = 18;
+  optional int32 sb_high_cl = 19;
+  optional int32 sb_low_ph = 20;
+  optional int32 sb_caution_low_ph = 21;
+  optional int32 sb_caution_high_ph = 22;
+  optional int32 sb_high_ph = 23;
+}
