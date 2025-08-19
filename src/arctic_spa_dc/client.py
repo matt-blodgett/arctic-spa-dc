@@ -367,14 +367,14 @@ class ArcticSpaClient:
         """
 
         requested_messages = {
-            message_type.value: None for message_type in message_types
+            message_type: None for message_type in message_types
         }
 
         missing_messages = True
         while missing_messages:
             for message in await self.read_messages():
                 if message:
-                    requested_messages[message.message_type.value] = message
+                    requested_messages[message.message_type] = message
             missing_messages = None in requested_messages.values()
 
         return requested_messages
