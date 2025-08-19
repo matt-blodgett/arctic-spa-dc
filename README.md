@@ -10,10 +10,6 @@ In this way, we can gather practically any desired information about the hot tub
 
 We can also send "command" packets to do things such as set the temperature setpoint, pump statuses, lights, etc.
 
-Expands on the ideas and code from the following projects:
-* https://github.com/xxv/arctic-spa
-* https://github.com/Patrick-Ohlson/SpaBoii
-
 ## Setup
 
 To compile the protobuf message definitions:
@@ -55,6 +51,15 @@ await arctic_spa_client.write_command(CommandType.LIGHTS, True)
 ```
 
 For more details, see [/example/demo.py](./example/demo.py)
+
+## Acknowledgments
+
+Inspired by, and uses code from, the following projects:
+
+| Author | Repository |
+| -| - |
+| Steve Pomeroy | https://github.com/xxv/arctic-spa |
+| Patrick Ohlson | https://github.com/Patrick-Ohlson/SpaBoii |
 
 ## License
 
