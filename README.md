@@ -27,12 +27,12 @@ from arctic_spa_dc.client import MessageType
 from arctic_spa_dc.client import CommandType
 
 
-async def main():
+def main():
     host = '192.168.0.0'
 
     arctic_spa_client = ArcticSpaClient(host)
 
-    connected = await arctic_spa_client.connect()
+    connected = arctic_spa_client.connect()
     if not connected:
         exit(-1)
 ```
@@ -40,14 +40,14 @@ async def main():
 Now we can request a status update from the device:
 
 ```python
-message = await arctic_spa_client.fetch_one(MessageType.LIVE)
+message = arctic_spa_client.fetch_one(MessageType.LIVE)
 print(message)
 ```
 
 Or send a command to turn on the lights:
 
 ```python
-await arctic_spa_client.write_command(CommandType.LIGHTS, True)
+arctic_spa_client.write_command(CommandType.LIGHTS, True)
 ```
 
 For more details, see [/example/demo.py](./example/demo.py)

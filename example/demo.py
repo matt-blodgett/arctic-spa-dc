@@ -9,8 +9,8 @@ Usage:
 
 
 import sys
+import time
 import socket
-import asyncio
 
 from arctic_spa_dc.discovery import NetworkSearch
 from arctic_spa_dc.client import ArcticSpaClient
@@ -22,11 +22,11 @@ from arctic_spa_dc.client import PumpStatus
 def get_ip() -> str:
     """
     Gets the local address with the default route
-    From fatal_error on Stack Overflow https://stackoverflow.com/a/28950776
     """
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(0)
+
     try:
         # doesn't even have to be reachable
         sock.connect(('10.254.254.254', 1))
@@ -39,7 +39,7 @@ def get_ip() -> str:
     return ip_addr
 
 
-async def find_hot_tub(local_addr: str, subnet_mask: int) -> str:
+def find_hot_tub(local_addr: str, subnet_mask: int) -> str:
     """
     Scans the subnet for Arctic Spa hot tubs
     """
@@ -47,7 +47,7 @@ async def find_hot_tub(local_addr: str, subnet_mask: int) -> str:
     print(f'Searching for hot tub from {local_addr}/{subnet_mask}...')
 
     searcher = NetworkSearch(local_addr, subnet_mask)
-    results = await searcher.search()
+    results = searcher.search()
 
     host = None
 
@@ -62,15 +62,13 @@ async def find_hot_tub(local_addr: str, subnet_mask: int) -> str:
     return host
 
 
-async def get_arctic_spa_client() -> ArcticSpaClient:
+def get_arctic_spa_client() -> ArcticSpaClient:
     host = None
     if len(sys.argv) == 1:
-        host = await find_hot_tub(get_ip(), 24)
-
+        host = find_hot_tub(get_ip(), 24)
         if not host:
             print('Could not find a host device!')
             exit(-1)
-
     elif len(sys.argv) == 2:
         host = sys.argv[1]
 
@@ -78,7 +76,7 @@ async def get_arctic_spa_client() -> ArcticSpaClient:
 
     print(f'connecting to host device @ {host}...')
 
-    connected = await arctic_spa_client.connect()
+    connected = arctic_spa_client.connect()
 
     if not connected:
         print('connecting failed!')
@@ -88,28 +86,28 @@ async def get_arctic_spa_client() -> ArcticSpaClient:
     return arctic_spa_client
 
 
-async def test_commands():
-    arctic_spa_client = await get_arctic_spa_client()
+def test_commands():
+    arctic_spa_client = get_arctic_spa_client()
 
-    await arctic_spa_client.write_command(CommandType.PUMP_1, PumpStatus.PUMP_HIGH)
-    await asyncio.sleep(2)
+    arctic_spa_client.write_command(CommandType.PUMP_1, PumpStatus.PUMP_HIGH)
+    time.sleep(2)
 
-    await arctic_spa_client.write_command(CommandType.LIGHTS, True)
-    await asyncio.sleep(2)
+    arctic_spa_client.write_command(CommandType.LIGHTS, True)
+    time.sleep(2)
 
-    message = await arctic_spa_client.fetch_one(MessageType.LIVE)
+    message = arctic_spa_client.fetch_one(MessageType.LIVE)
 
     print(message)
 
-    await arctic_spa_client.disconnect()
+    arctic_spa_client.disconnect()
 
 
-async def main():
-    arctic_spa_client = await get_arctic_spa_client()
+def main():
+    arctic_spa_client = get_arctic_spa_client()
 
     print('getting messages...')
 
-    message = await arctic_spa_client.fetch_one(MessageType.LIVE)
+    message = arctic_spa_client.fetch_one(MessageType.LIVE)
 
     print()
     print('Live')
@@ -138,7 +136,7 @@ async def main():
     print('fogger -', message.fogger)
     print()
 
-    message = await arctic_spa_client.fetch_one(MessageType.ONZEN_LIVE)
+    message = arctic_spa_client.fetch_one(MessageType.ONZEN_LIVE)
 
     print()
     print('OnzenLive')
@@ -166,7 +164,7 @@ async def main():
     print('electrode_wear -', message.electrode_wear)
     print()
 
-    message = await arctic_spa_client.fetch_one(MessageType.CONFIGURATION)
+    message = arctic_spa_client.fetch_one(MessageType.CONFIGURATION)
 
     print()
     print('Configuration')
@@ -194,7 +192,7 @@ async def main():
     print('yess -', message.yess)
     print()
 
-    message = await arctic_spa_client.fetch_one(MessageType.INFORMATION)
+    message = arctic_spa_client.fetch_one(MessageType.INFORMATION)
 
     print()
     print('Information')
@@ -223,7 +221,7 @@ async def main():
     print('rfid_serial_number -', message.rfid_serial_number)
     print()
 
-    message = await arctic_spa_client.fetch_one(MessageType.SETTINGS)
+    message = arctic_spa_client.fetch_one(MessageType.SETTINGS)
 
     print()
     print('Settings')
@@ -256,8 +254,8 @@ async def main():
     print()
 
     print('disconnecting')
-    await arctic_spa_client.disconnect()
+    arctic_spa_client.disconnect()
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()

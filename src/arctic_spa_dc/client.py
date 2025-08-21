@@ -1,4 +1,5 @@
-import asyncio
+import time
+import socket
 import struct
 
 from enum import IntEnum
@@ -160,7 +161,6 @@ class ArcticSpaProtocol:
         """
         Decodes the raw data into a list of messages
         """
-
         messages = []
 
         to_decode = data
@@ -177,7 +177,6 @@ class ArcticSpaProtocol:
         """
         Decodes the first message of the data and return any undecoded data
         """
-
         if len(data) < ArcticSpaProtocol.HEADER_SIZE:
             raise DecodeError(f'Expecting at least {ArcticSpaProtocol.HEADER_SIZE} bytes, got {len(data)}')
 
@@ -249,10 +248,10 @@ MAX_TEMPERATURE = 104
 
 
 def assert_connected(func):
-    async def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs):
         if not self.is_connected():
             raise ConnectionError('No open connection')
-        return await func(self, *args, **kwargs)
+        return func(self, *args, **kwargs)
     return wrapper
 
 
@@ -265,7 +264,7 @@ class ArcticSpaClient:
         """
         Configures a new client
 
-        Initialize a connection by calling `.connect()` or using the `async with` keywords
+        Initialize a connection by calling `.connect()` or using the `with` keyword
         Close the connection when finished by calling `.disconnect()`
 
         The client can be used in a few ways:
@@ -274,34 +273,27 @@ class ArcticSpaClient:
             * Calling `.write_requested_messages()` and then reading
                 back with `.read_messages()` or `.read_raw_stream_data()`
         """
-
         self.host = host
         self.port = port or 65534
 
         self._proto = ArcticSpaProtocol()
+        self._conn = None
 
-        self._reader = None
-        self._writer = None
-
-    async def __aenter__(self):
-        await self.connect()
+    def __enter__(self):
+        self.connect()
         return self
 
-    async def __aexit__(self, exc_type, exc, tb):
-        await self.disconnect()
+    def __exit__(self, exc_type, exc, tb):
+        self.disconnect()
 
     def __del__(self):
         """
         Attempt to close connection if not already closed
         """
-
         if self.is_connected():
-            try:
-                asyncio.run(self.disconnect())
-            except Exception:
-                pass
+            self._conn.close()
 
-    async def connect(
+    def connect(
         self,
         host: str | None = None,
         port: int | None = None,
@@ -311,8 +303,7 @@ class ArcticSpaClient:
         """
         Opens a connection to the host device
         """
-
-        await self.disconnect()
+        self.disconnect()
 
         if host:
             self.host = host
@@ -324,54 +315,48 @@ class ArcticSpaClient:
             raise ValueError('No host value specified; cannot connect!')
 
         attempt = 0
-
         while attempt < attempts:
             try:
-                self._reader, self._writer = await asyncio.wait_for(
-                    asyncio.open_connection(self.host, self.port),
-                    timeout=timeout
-                )
-            except TimeoutError:
+                self._conn = socket.create_connection((self.host, self.port), timeout)
+                break
+            except socket.timeout:
                 attempt += 1
             except (OSError, ConnectionRefusedError):
                 return False
 
         return self.is_connected()
 
-    async def disconnect(self) -> None:
+    def disconnect(self) -> None:
         """
         Closes the connection to the host device
         """
+        if self._conn:
+            try:
+                self._conn.shutdown(2)
+                self._conn.close()
+            except Exception:
+                pass
 
-        if self._writer:
-            self._writer.close()
-            await self._writer.wait_closed()
-
-            self._reader = None
-            self._writer = None
+            self._conn = None
 
     def is_connected(self) -> bool:
         """
         Checks if there is an active connection to the host device
         """
-
-        if self._writer:
-            return not self._writer.is_closing()
-        return False
+        return self._conn is not None
 
     @staticmethod
     def _get_message_type_packet_bytes(message_type: MessageType) -> bytes:
         """
         Crafts a command packet in bytes based on the numeric message type
         """
-
         packet_type = message_type.value
         packet = Packet(packet_type, bytearray())
         packet_bytes = packet.serialize()
         return packet_bytes
 
     @assert_connected
-    async def write_requested_messages(
+    def write_requested_messages(
         self,
         message_types: MessageType | list[MessageType] | tuple[MessageType] | set[MessageType]
     ) -> None:
@@ -379,7 +364,6 @@ class ArcticSpaClient:
         Requests the specified messages from the host device by crafting a command packet
             and writing it over the open connection
         """
-
         if isinstance(message_types, MessageType):
             message_types = [message_types]
         elif isinstance(message_types, (list, tuple)):
@@ -389,49 +373,47 @@ class ArcticSpaClient:
         for message_type in message_types:
             command_packet_bytes += self._get_message_type_packet_bytes(message_type)
 
-        self._writer.write(command_packet_bytes)
-        await self._writer.drain()
+        self._conn.sendall(command_packet_bytes)
 
     @assert_connected
-    async def read_raw_stream_data(self) -> bytes:
+    def read_raw_stream_data(self) -> bytes:
         """
         Reads data sent over the network from the host device
         """
-
-        return await self._reader.read(4096)
+        return self._conn.recv(2048)
 
     @assert_connected
-    async def read_messages(self) -> list[Message]:
+    def read_messages(self) -> list[Message]:
         """
         Reads data sent over the network from the host device and returns any received and parsed protobuf messages
         """
-
-        data = await self.read_raw_stream_data()
+        data = self.read_raw_stream_data()
         return self._proto.decode(data)
 
-    async def _poll_messages(
+    def _poll_messages(
         self,
-        message_types: list[MessageType] | tuple[MessageType] | set[MessageType]
+        message_types: list[MessageType] | tuple[MessageType] | set[MessageType],
+        timeout: float | None = 5.0
     ) -> dict:
         """
         Polls the host device until all requested message data has been recieved
         """
-
+        start = time.time()
         requested_messages = {
             message_type: None for message_type in message_types
         }
-
         missing_messages = True
         while missing_messages:
-            for message in await self.read_messages():
+            if timeout and (time.time() - start) > timeout:
+                raise TimeoutError('Timeout waiting for messages')
+            for message in self.read_messages():
                 if message:
                     requested_messages[message.message_type] = message
             missing_messages = None in requested_messages.values()
-
         return requested_messages
 
     @assert_connected
-    async def poll_messages(
+    def poll_messages(
         self,
         message_types: MessageType | list[MessageType] | tuple[MessageType] | set[MessageType],
         timeout: float | None = 5.0
@@ -443,26 +425,16 @@ class ArcticSpaClient:
 
         Note: May return message types that were not requested in addition to the requested types.
         """
-
         if isinstance(message_types, MessageType):
             message_types = [message_types]
         elif isinstance(message_types, (list, tuple)):
             message_types = set(message_types)
 
-        await self.write_requested_messages(message_types)
-
-        messages = await asyncio.wait_for(
-            self._poll_messages(
-                message_types=message_types
-            ),
-            timeout=timeout
-        )
-        # except asyncio.TimeoutError:
-
-        return messages
+        self.write_requested_messages(message_types)
+        return self._poll_messages(message_types=message_types, timeout=timeout)
 
     @assert_connected
-    async def fetch_one(
+    def fetch_one(
         self,
         message_type: MessageType,
         timeout: float | None = 5.0
@@ -470,8 +442,7 @@ class ArcticSpaClient:
         """
         Returns only a single message requested from `.poll_messages()`
         """
-
-        messages = await self.poll_messages(message_type, timeout=timeout)
+        messages = self.poll_messages(message_type, timeout=timeout)
         message = messages[message_type]
         return message
 
@@ -483,7 +454,6 @@ class ArcticSpaClient:
         """
         Validates the requested value based on the command type being set
         """
-
         command_type_value_class = {
             CommandType.TEMPERATURE_SETPOINT_FAHRENHEIT: int,
             CommandType.PUMP_1: PumpStatus,
@@ -533,7 +503,7 @@ class ArcticSpaClient:
         return property_name, raw_value
 
     @assert_connected
-    async def write_command(
+    def write_command(
         self,
         command_type: CommandType,
         command_value: int | bool | PumpStatus | SaunaState
@@ -541,7 +511,6 @@ class ArcticSpaClient:
         """
         Validates the requested update, then crafts and sends a command packet to the host device
         """
-
         property_name, raw_value = self._validate_command(command_type, command_value)
 
         command = Command_pb2.Command()
@@ -552,5 +521,4 @@ class ArcticSpaClient:
         command_packet = Packet(MessageType.COMMAND.value, buffer)
         command_packet_bytes = command_packet.serialize()
 
-        self._writer.write(command_packet_bytes)
-        await self._writer.drain()
+        self._conn.sendall(command_packet_bytes)
