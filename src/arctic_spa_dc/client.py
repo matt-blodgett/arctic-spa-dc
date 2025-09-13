@@ -5,6 +5,8 @@ import struct
 from enum import IntEnum
 from enum import StrEnum
 
+from google.protobuf.json_format import MessageToDict
+
 from arctic_spa_dc.packet import Packet
 
 from arctic_spa_dc.proto import Live_pb2
@@ -138,6 +140,9 @@ class Message:
         s += f' checksum: {self._checksum_str()}>'
         s += f'\ndata:\n{self.data}\nend data'
         return s
+
+    def to_dict(self):
+        return MessageToDict(self, preserving_proto_field_name=True)
 
 
 class DecodeError(Exception):
@@ -305,26 +310,32 @@ class ArcticSpaClient:
         """
         self.disconnect()
 
-        if host:
-            self.host = host
+        host = host or self.host
+        port = port or self.port
 
-        if port:
-            self.port = port
+        if not host:
+            raise ValueError('No value for host set!')
 
-        if not self.host:
-            raise ValueError('No host value specified; cannot connect!')
+        if not port:
+            raise ValueError('No value for port set!')
 
         attempt = 0
         while attempt < attempts:
             try:
-                self._conn = socket.create_connection((self.host, self.port), timeout)
+                self._conn = socket.create_connection((host, port), timeout)
                 break
             except socket.timeout:
                 attempt += 1
             except (OSError, ConnectionRefusedError):
                 return False
 
-        return self.is_connected()
+        connected = self.is_connected()
+
+        if connected:
+            self.host = host
+            self.port = port
+
+        return connected
 
     def disconnect(self) -> None:
         """
